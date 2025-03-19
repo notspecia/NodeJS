@@ -1,0 +1,15 @@
+{
+  "name": "creation-httpserver",
+  "version": "1.0.0",
+  "description": "configure my first http-server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js "
+  },
+  "author": "Gabriele Speciale",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
