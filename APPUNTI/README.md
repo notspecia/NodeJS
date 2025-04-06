@@ -135,6 +135,7 @@ res.end();
 
 ## 01. Creare un HTTP server base
 Il modo più semplice per creare un server è usare `http.createServer()` e il metodo `.listen()` per avviarlo su una porta specifica.
+SI PUO RESTITUIRE PER OGNI ROTTA GESTITA 1 SOLA RISPOSTA (res.send()||res.json()||res.end()...), SE E + DI UNA LANCERA UN ERRORE!!
 un esempio molto comune di come creare un server è:
 ```js
 import http from 'http';
@@ -284,7 +285,7 @@ npm install express
 ## 🏗️ Creazione di un server base
 Usare Express semplifica la creazione di un server, senza andare ad utilizzare moduli come http:
 - Il server ascolta sulla porta 8000 come prima.
-- Invece di dover gestire manualmente http.createServer, Express ti offre un metodo app.get() per gestire facilmente le richieste HTTP GET.
+- Invece di dover gestire manualmente http.createServer, `Express ti offre un metodo app.get()` per gestire facilmente le richieste HTTP GET.
 - res.send() è una funzione che invia direttamente la risposta (in questo caso HTML), senza dover usare res.write() e res.end() come con il modulo http.
 
 ```javascript
@@ -391,5 +392,119 @@ Le API `espongono degli endpoint (URL)` che il client può chiamare per ottenere
 
 schema di funzionamento: 
 ![funzionamento API](./API-expressjs.png);
+```plaintext
+ FRONTEND          BACKEND(SERVERSIDE)
+(react/vue)  <-------->   api    <------>  DB
+```
 
-## 
+
+
+---
+
+
+
+# Query parameters && Query strings
+
+## Query Parameters (Route Parameters)
+I **Query Parameters** sono usati per identificare una risorsa in modo più diretto, come ad esempio passare :id di un gruppo di persone.
+
+### Quando usarle
+I Query Parameters sono usati quando un valore è parte essenziale dell'endpoint e serve per identificare una risorsa specifica.
+✅ Esempi:
+1️⃣ Recuperare i dettagli di un utente specifico
+
+### Struttura di un Query Parameter
+```plaintext
+https://example.com/users/5(:id)
+```
+
+### Esempio con Express
+```javascript
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id; // ottiene l'ID dali parametri della rotta
+    res.json({ message: `Dettagli utente con ID ${userId}` });
+});
+```
+
+📌 **Chiamata GET:**
+```plaintext
+GET /users/5
+```
+📌 **Risposta JSON:**
+```json
+{
+  "message": "Dettagli utente con ID 5"
+}
+```
+
+
+## Query Strings
+Le **Query Strings** vengono utilizzate per passare dati all'interno dell'URL in una richiesta HTTP **GET**, esempio vogliamo andare a prendere il parametro nome della query string, di tutte le persone che hanno quel nome!
+
+### Quando usarle?
+Le Query Strings sono usate quando servono filtri, ordinamenti o parametri opzionali per la richiesta.
+✅ Esempi:
+- `Filtrare o ordinare dati`: Ad esempio, visualizzare prodotti di una certa categoria o ordinare risultati in base a determinati criteri.​
+- `Passare parametri opzionali`: Informazioni che non sono essenziali per la visualizzazione della pagina, ma che possono personalizzare l'esperienza dell'utente.​
+- `Tracciare informazioni`: Come codici UTM per monitorare le campagne di marketing.​
+
+###  Struttura di una Query String
+Un'URL con query string ha questa forma, dove andiamo magari a fare una get di tutti le persone che hanno nome luca, ma MASSIMO mandiamo come risposta solo 2(limite) luca:
+```plaintext
+https://example.com/persone?nome=luca&limite=2
+```
+🔹 **Caratteristiche:**
+- Inizia con `?` dopo l'URL di base.
+- Contiene coppie `chiave=valore`.
+- Ogni coppia è separata da `&` se ce ne sono più di una.
+
+### Esempio con Express
+```javascript
+app.get('/search', (req, res) => {
+    const { term, page } = req.query; // estrazione i parametri dalla query string
+    res.json({ message: `Hai cercato '${term}' alla pagina ${page}` });
+});
+```
+
+📌 **Chiamata GET:**
+```plaintext
+GET /search?term=javascript&page=2
+```
+📌 **Risposta JSON:**
+```json
+{
+  "message": "Hai cercato 'javascript' alla pagina 2"
+}
+```
+
+
+## Combinare Query Strings e Query Parameters
+Si possono usare **entrambi** insieme, (numero 5 è :id ed è query parameter  /  quel pezzo dentro il ? è query string):
+```plaintext
+https://example.com/users/5?details=full
+```
+
+### Esempio con Express
+```javascript
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id;
+    const details = req.query.details;
+    res.json({ message: `Utente ${userId}, dettagli: ${details}` });
+});
+```
+
+📌 **Chiamata GET:**
+```plaintext
+GET /users/5?details=full
+```
+📌 **Risposta JSON:**
+```json
+{
+  "message": "Utente 5, dettagli: full"
+}
+```
+
+**Differenze delle Query parameters con Query Strings:**
+- Sono parte del percorso dell'URL.
+- Non usano `?` e `&`.
+- Sono definiti nei percorsi API con `:parametro`.

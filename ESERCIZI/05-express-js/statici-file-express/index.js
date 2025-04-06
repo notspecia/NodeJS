@@ -1,5 +1,5 @@
 /* 
-FILE STATICI + EXPRESSJS --> SERVER SIDE RENDERING
+FILE STATICI + EXPRESSJS 
 - usare commonjs con require(), per evitare problemi con il type: module, come con __dirname che non viene preso correttamente
 tornare a CommonJS e usare direttamente __dirname. basta modificare il file package.json e rimuovere "type": "module"
 - creazione cartella "public/" in cui inseriamo i nostri file STATICI (html, css...) che VOGLIAMO mostrare
@@ -8,7 +8,7 @@ tornare a CommonJS e usare direttamente __dirname. basta modificare il file pack
 const express = require('express');
 const app = express();
 
-// ANDIAMO A DIRE AD EXPRESS DI UTILIZZARE QUESTI FILE STATICI IN "public/"
+// permette a Express di rendere disponibili i file statici nella cartella public/. (immagini e JavaScript client-side saranno accessibili direttamente dal browser)
 app.use(express.static('public'));
 
 
@@ -16,7 +16,7 @@ app.use(express.static('public'));
 ora al posto di fare un .send() di codice markup MANDIAMO per le rotte prese con GET, 
 tramite .sendFile() specifichiamo:
 - nome file statico.html
-- rotta della folder "/public" in cui sono presenti i file statici
+- percorso assoluto (percorso assoluto della cartella in cui si trova il file app.js.) + "/public" in cui sono presenti i file statici
 */
 
 // mandiamo in base alla request il file statico per la rotta "/" iniziale la homepage.html 
