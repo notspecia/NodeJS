@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 
+
 // 02. settaggio dell'enigne ejs per mandare file HTML con estensione EJS
 app.set('view engine', 'ejs');
 
@@ -17,8 +18,8 @@ app.listen(8000, () => {
 app.get('/', (req, res) => {
     // res.send('hello') // send di una stringa
     // res.download('server.js') // passiamo al client come risposta il path del file da scaricare dal server!
-    // res.sendStatus(500) // send di uno status code da mandare al client
-    // res.status(500).send('problema lato server') // concatena allo stauts code un .send() personalizzato (errore 500 visibile in console)
+    // res.sendStatus(500) // send di uno status code da mandare alla window del client
+    // res.status(500).send('problema lato server') // concatena allo stauts code un .send() personalizzato (status 500 visibile in console)
     res.status(200).json({ messaggio: 'ciao benvenuto!' }) // mandiamo con stato 200 un JSON al client
 });
 
@@ -43,3 +44,7 @@ app.get('/ejs', (req, res) => {
 // 09. import del nostro router dentro la cartella users, e intergrazione con .use nella nostra app principale + definizione del path di base di questo Router custom 
 const userRouter = require('./routes/users');
 app.use('/users', userRouter); // STIAMO DICENDO tutto ciò che inizia con /users vai ad interrogare e controllare le rotte associate ad esso
+
+// ripasso di utilizzo routes custom separate in file diversi
+const foodsRouter = require('./routes/foods');
+app.use('/foods', foodsRouter);
