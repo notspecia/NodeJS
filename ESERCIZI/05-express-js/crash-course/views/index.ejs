@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+    tramite ejs oltre che mandare i file HTML possiamo definire espressioni, variabili passate dal server..., 
+    le variabili possono sempre definite con locals.$variabile (e se non passate non si rompe il client) e avere dei valori di fallback default  
+    -->
+    <p>hello world from index.ejs, sono <%= locals.nome || 'Tidus' %> e ho <%= 2 + 19 %> anni
+    </p>
+</body>
+</html>
